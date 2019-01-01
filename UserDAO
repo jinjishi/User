@@ -1,0 +1,12 @@
+package intership2.dao;
+import java.lang.Exception;
+import java.util.ArrayList;
+
+import intership2.dao.User;
+public interface UserDAO {
+	public boolean addUser(User user) throws Exception; 
+	public boolean delUser(String Userid) throws Exception; 
+	public boolean updateUser(String sql) throws Exception;
+	public ArrayList<User> getUser(String sql) throws Exception;
+
+}
