@@ -1,0 +1,145 @@
+package intership2.dao;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import intership2.dao.DbcpJdbcUtil;
+import intership2.dao.User;
+import java.sql.Connection; 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.lang.Exception;
+public class UserDaoImpl implements UserDAO {
+	public boolean addUser(User user) throws Exception {
+		boolean result=false;
+		Connection connection = null; 
+		PreparedStatement pStatement = null; 
+		try { 
+			connection = DbcpJdbcUtil.getConnection(); 
+		    String sql = "use shopping insert into [User](Nickname,Userid,Sex,Password,QQid,QQpassword,Wechatid,Wechatpassword) values (?,?,?,?,?,?,?,?)";
+		    pStatement = connection.prepareStatement(sql);
+			pStatement.setString(1,user.GetterNickname()); 
+		    pStatement.setString(2,user.GetterUserid()); 
+		    pStatement.setString(3,user.GetterSex()); 
+		    pStatement.setString(4,user.GetterPassword());
+		    pStatement.setString(5,user.GetterQQid());
+		    pStatement.setString(6,user.GetterQQpassword());
+		    pStatement.setString(7,user.GetterWechatid());
+		    pStatement.setString(8,user.GetterWechatpassword());
+		    pStatement.execute(); 
+		    result=true;
+		    System.out.println("result="+result);
+		    pStatement.close(); 
+		} catch (SQLException e) { 
+			e.printStackTrace();
+			result=false;
+			} finally { 
+				try { 
+					connection.close();
+					} catch (SQLException e) { 
+						e.printStackTrace();
+						}
+				}
+		return result;
+		}
+	public boolean delUser(String Userid) throws Exception {
+		boolean result=false;
+		Connection connection = null; 
+		PreparedStatement pStatement = null; 
+		try {
+			connection = DbcpJdbcUtil.getConnection(); 
+			String sql="use shopping DELETE FROM [user] WHERE Userid ="+Userid;
+			pStatement = connection.prepareStatement(sql); 
+			pStatement.execute();  
+			int count=pStatement.getUpdateCount();
+			if(count!=-1) {
+				result=true;
+			}
+			else {
+				result=false;
+			}
+			System.out.println("result="+result);
+		}catch (SQLException e) { 
+			e.printStackTrace();
+			result=false;
+			} finally { 
+				try { 
+					connection.close();
+					} catch (SQLException e) { 
+						e.printStackTrace();
+						}
+				}
+		return result;
+		}
+	public ArrayList<User> getUser(String sql) throws Exception{
+		PreparedStatement pStatement = null; 
+		Connection connection = null;
+		ArrayList<User> users=new ArrayList<User>();
+		boolean result=false;
+		try {
+			connection = DbcpJdbcUtil.getConnection(); 
+		    pStatement =connection.prepareStatement(sql);
+			ResultSet rs=pStatement.executeQuery();
+			while(rs.next()) {
+				User user=new User();
+				user.SetterNickname(rs.getString(1));
+				user.SetterUserid(rs.getString(2));
+				user.SetterSex(rs.getString(3));
+				user.SetterPassword(rs.getString(4));
+				user.SetterQQid(rs.getString(5));
+				user.SetterQQpassword(rs.getString(6));
+				user.SetterWechatid(rs.getString(7));
+				user.SetterWechatpassword(rs.getString(8));
+				System.out.printf(user.GetterNickname()+"\t");
+				System.out.printf(user.GetterUserid()+"\t");
+				System.out.printf(user.GetterSex()+"\t");
+				System.out.printf(user.GetterPassword()+"\t");
+				System.out.printf(user.GetterQQid()+"\t");
+				System.out.printf(user.GetterQQpassword()+"\t");
+				System.out.printf(user.GetterWechatid()+"\t");
+				System.out.printf(user.GetterWechatpassword()+"\n");
+			}
+			result=true;
+			System.out.println("result="+result);
+		}catch (SQLException e) { 
+			e.printStackTrace();
+			} 
+				try { 
+					connection.close();
+					} catch (SQLException e) { 
+						e.printStackTrace();
+						}
+				return users;
+				}
+	@SuppressWarnings("null")
+	public boolean updateUser(String sql) throws Exception
+	{
+		Connection connection = null;
+		PreparedStatement pStatement = null; 
+		boolean result=false;
+		try {
+			connection = DbcpJdbcUtil.getConnection(); 
+			pStatement=connection.prepareStatement(sql);
+			pStatement.execute();  
+			int count=pStatement.getUpdateCount();
+			if(count!=-1)
+			{
+				result=true;
+			}
+			else
+			{
+				result=false;
+			}
+			System.out.println("result="+result);
+		}catch (SQLException e) { 
+				e.printStackTrace();
+				result=false;
+				} finally { 
+					try { 
+						connection.close();
+						} catch (SQLException e) { 
+							e.printStackTrace();
+							}
+					}
+			return result;
+			}
+	}
