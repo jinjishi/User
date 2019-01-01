@@ -1,0 +1,24 @@
+package intership2.dao;
+import java.lang.Exception;
+import java.util.ArrayList;
+public class UserDaoImplTest {
+	public static void main(String[] args) throws Exception {
+		User user1=new User();
+		user1.SetterNickname("jiyanfei");
+		user1.SetterUserid("110");
+		user1.SetterSex("Ů");
+		user1.SetterPassword("1234");
+		user1.SetterQQid("1234");
+		user1.SetterQQpassword("1234");
+		user1.SetterWechatid("1234");
+		user1.SetterWechatpassword("1234");
+		UserDaoImpl impl=new UserDaoImpl();
+		impl.addUser(user1);
+		impl.delUser("110");
+		@SuppressWarnings("unused")
+		ArrayList<User> list=new ArrayList<User>();
+		list=impl.getUser("use shopping select * from [User] where Userid='123'");
+		impl.updateUser("use shopping UPDATE [User] SET QQpassword='123456' Where QQid='12345678910'");
+
+	}
+}
